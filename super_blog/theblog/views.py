@@ -9,7 +9,7 @@ from .forms import PostForm , EditForm
 class HomeView(ListView):
     model = Post
     template_name ="home.html"
-    ordering = ['-id']
+    ordering = ['-post_date']
 
 class ArticleDetailView(DetailView):
     model = Post
@@ -19,6 +19,10 @@ class AddPostView(CreateView):
     model = Post
     form_class = PostForm
     template_name = "add_post.html"
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class UpdatePostView(UpdateView):
     model = Post
